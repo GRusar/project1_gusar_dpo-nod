@@ -27,7 +27,7 @@ def process_command(game_state: dict, command: str):
             player_actions.use_item(game_state, item_name = arg)
         case "solve":
             pass
-            # player_actions.solve_puzzle(game_state)
+            utils.solve_puzzle(game_state)
         case "help":
             utils.show_help()
         case "quit" | "exit":
@@ -43,7 +43,10 @@ def main():
 
   while not game_state['game_over']:
     input = player_actions.get_input()
-    process_command(game_state, input)
-
+    if input:
+        process_command(game_state, input)
+    else:
+        print("Введите команду (или 'help' для отображения справки)")
+        player_actions.get_input()
 if __name__ == "__main__":
     main()
