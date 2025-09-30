@@ -43,10 +43,10 @@ def main():
 
   while not game_state['game_over']:
     input = player_actions.get_input()
-    if input:
-        process_command(game_state, input)
-    else:
+    while not input:
         print("Введите команду (или 'help' для отображения справки)")
-        player_actions.get_input()
+        input = player_actions.get_input()
+    process_command(game_state, input)
+
 if __name__ == "__main__":
     main()
