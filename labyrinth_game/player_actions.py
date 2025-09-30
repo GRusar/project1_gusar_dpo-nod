@@ -11,6 +11,7 @@ def show_inventory(game_state: dict):
 def get_input(prompt: str = "> "):
   try:
       print(prompt, end='', flush=True)
+      return input()
   except (KeyboardInterrupt, EOFError):
       print("\nВыход из игры.")
       return "quit" 
@@ -18,6 +19,7 @@ def get_input(prompt: str = "> "):
 def move_player(game_state: dict, direction: str):
     current_room = game_state['current_room']
     room_info = constants.ROOMS[current_room]
+
     if direction in room_info['exits']:
         new_room = room_info['exits'][direction]
         game_state['current_room'] = new_room
@@ -25,3 +27,14 @@ def move_player(game_state: dict, direction: str):
         utils.describe_current_room(game_state)
     else:
         print("Нельзя пойти в этом направлении.")
+
+def take_item(game_state: dict, item_name: str):
+    current_room = game_state['current_room']
+    room_info = constants.ROOMS[current_room]
+
+    if item_name in room_info['items']:
+        game_state['player_inventory'].append(item_name)
+        room_info['items'].remove(item_name)
+        print(f"Вы взяли {item_name}.")
+    else:
+        print("Такого предмета здесь нет.")
