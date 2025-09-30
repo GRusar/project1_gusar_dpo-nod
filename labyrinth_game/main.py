@@ -26,7 +26,7 @@ def process_command(game_state: dict, command: str):
             player_actions.take_item(game_state, item_name = arg)
         case "use":
             pass
-            # player_actions.use_item(game_state, item_name = arg)
+            player_actions.use_item(game_state, item_name = arg)
         case "solve":
             pass
             # player_actions.solve_puzzle(game_state)

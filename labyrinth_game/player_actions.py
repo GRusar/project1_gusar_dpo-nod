@@ -33,8 +33,27 @@ def take_item(game_state: dict, item_name: str):
     room_info = constants.ROOMS[current_room]
 
     if item_name in room_info['items']:
-        game_state['player_inventory'].append(item_name)
-        room_info['items'].remove(item_name)
-        print(f"Вы взяли {item_name}.")
+        if not item_name in game_state['player_inventory']:
+          game_state['player_inventory'].append(item_name)
+          room_info['items'].remove(item_name)
+          print(f"Вы взяли {item_name}.")
+        else:
+          print(f"У вас уже есть {item_name} в инвентаре.")
     else:
         print("Такого предмета здесь нет.")
+
+def use_item(game_state: dict, item_name: str):
+    if item_name not in game_state['player_inventory']:
+        print(f"У вас нет предмета '{item_name}' в инвентаре.")
+    else:
+        match item_name:
+            case 'torch':
+                print("Вы зажгли факел. Теперь вокруг светлее.")
+            case "sword":
+                print("Вы достали меч. Теперь вы чувствуете себя увереннее.")
+            case "bronze box":
+                print("Вы открыли бронзовую шкатулку и нашли внутри 'Ржавый ключ'")
+                if not 'rusty key' in game_state['player_inventory']:
+                  game_state['player_inventory'].append('rusty key')
+            case _:
+                print(f"У вас есть {item_name}, но вы не знаете, как им пользоваться.")
