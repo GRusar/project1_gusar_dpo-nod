@@ -13,3 +13,14 @@ def describe_current_room(game_state: dict) -> None:
         print(f"  {number}. {direction} -> {name}")
     if room_info['puzzle']:
         print("Кажется, здесь есть загадка (используйте команду solve).")
+
+def show_help():
+    print("\nДоступные команды:")
+    print("  go <direction>  - перейти в направлении (north/south/east/west)")
+    print("  look            - осмотреть текущую комнату")
+    print("  take <item>     - поднять предмет")
+    print("  use <item>      - использовать предмет из инвентаря")
+    print("  inventory       - показать инвентарь")
+    print("  solve           - попытаться решить загадку в комнате")
+    print("  quit            - выйти из игры")
+    print("  help            - показать это сообщение") 
