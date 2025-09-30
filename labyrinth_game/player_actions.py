@@ -1,4 +1,5 @@
-
+from . import constants
+from . import utils
 
 def show_inventory(game_state: dict):
     inventory = game_state['player_inventory']
@@ -7,9 +8,20 @@ def show_inventory(game_state: dict):
     else:
         print("Кажется, ваш инвентарь пуст.")
 
-def get_input(prompt="> "):
+def get_input(prompt: str = "> "):
   try:
       print(prompt, end='', flush=True)
   except (KeyboardInterrupt, EOFError):
       print("\nВыход из игры.")
       return "quit" 
+  
+def move_player(game_state: dict, direction: str):
+    current_room = game_state['current_room']
+    room_info = constants.ROOMS[current_room]
+    if direction in room_info['exits']:
+        new_room = room_info['exits'][direction]
+        game_state['current_room'] = new_room
+        game_state['steps_taken'] += 1
+        utils.describe_current_room(game_state)
+    else:
+        print("Нельзя пойти в этом направлении.")
