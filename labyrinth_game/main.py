@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 
-from . import utils
-from . import player_actions
-
+from . import player_actions, utils
 
 game_state = {
       'player_inventory': [], # Инвентарь игрока

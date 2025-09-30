@@ -1,5 +1,4 @@
-from . import constants
-from . import player_actions
+from . import constants, player_actions
 
 
 def describe_current_room(game_state: dict) -> None:

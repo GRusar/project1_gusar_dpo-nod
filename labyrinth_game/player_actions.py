@@ -1,5 +1,5 @@
-from . import constants
-from . import utils
+from . import constants, utils
+
 
 def show_inventory(game_state: dict):
     inventory = game_state['player_inventory']
@@ -33,7 +33,7 @@ def take_item(game_state: dict, item_name: str):
     room_info = constants.ROOMS[current_room]
 
     if item_name in room_info['items']:
-        if not item_name in game_state['player_inventory']:
+        if item_name not in game_state['player_inventory']:
           game_state['player_inventory'].append(item_name)
           room_info['items'].remove(item_name)
           print(f"Вы взяли {item_name}.")
@@ -53,7 +53,7 @@ def use_item(game_state: dict, item_name: str):
                 print("Вы достали меч. Теперь вы чувствуете себя увереннее.")
             case "bronze box":
                 print("Вы открыли бронзовую шкатулку и нашли внутри 'Ржавый ключ'")
-                if not 'rusty key' in game_state['player_inventory']:
+                if 'rusty key' not in game_state['player_inventory']:
                   game_state['player_inventory'].append('rusty key')
             case _:
                 print(f"У вас есть {item_name}, но вы не знаете, как им пользоваться.")
