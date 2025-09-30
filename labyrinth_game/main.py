@@ -15,6 +15,9 @@ def process_command(game_state: dict, command: str):
 
     match action:
         case "go":
+            if not arg:
+                print("Укажите направление.")
+                return
             player_actions.move_player(game_state, direction = arg)
         case "inventory":
             player_actions.show_inventory(game_state)
