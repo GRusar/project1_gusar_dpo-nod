@@ -15,16 +15,18 @@ def describe_current_room(game_state: dict) -> None:
         print("Кажется, здесь есть загадка (используйте команду solve).")
 
 def solve_puzzle(game_state: dict) -> None:
-    puzzle = game_state['current_room']['puzzle']
+    current_room = game_state['current_room']
+    room_info = constants.ROOMS[current_room]
+    puzzle = room_info['puzzle']
     if not puzzle:
         print("Загадок здесь нет.")
     else:
         question, answer = puzzle
         print(f"Загадка: {question}")
-        player_answer =player_actions.get_input("Ваш ответ: ")
+        player_answer = player_actions.get_input("Ваш ответ: ")
         if player_answer.strip().lower() == answer.lower():
             print("Правильно! Вы решили загадку.")
-            game_state['current_room']['puzzle'] = None
+            room_info['puzzle'] = None
             # TODO: Нужно добавить награду за решение загадки
         else:
             print("Неверно. Попробуйте снова.")
