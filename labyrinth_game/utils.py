@@ -49,13 +49,18 @@ def attempt_open_treasure(game_state: dict):
     if 'treasure chest' not in room_info['items']:
         print("Сундук уже открыт или отсутствует.")
         return
-    if 'treasure_key' in game_state['player_inventory'] or 'rusty key' in game_state['player_inventory']:
+    if (
+        'treasure_key' in game_state['player_inventory'] 
+        or 'rusty key' in game_state['player_inventory']
+    ):
         print("Вы применяете ключ, и замок щёлкает. Сундук открыт!")
         room_info['items'].remove('treasure chest')
         print("В сундуке сокровище! Вы победили!")
         game_state['game_over'] = True
     else:
-        raw_response = player_actions.get_input("Сундук заперт. У вас нет ключа. Ввести код? (да/нет): ")
+        raw_response = player_actions.get_input(
+            "Сундук заперт. У вас нет ключа. Ввести код? (да/нет): "
+            )
         response = raw_response.strip().lower()
         match response:
             case "да":

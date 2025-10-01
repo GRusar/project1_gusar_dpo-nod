@@ -5,7 +5,6 @@ from . import player_actions, utils
 game_state = {
       'player_inventory': [], # Инвентарь игрока
       'current_room': 'entrance', # Текущая комната
-      # 'current_room': 'treasure_room', # TEST: Текущая комната
       'game_over': False, # Значения окончания игры
       'steps_taken': 0 # Количество шагов
 }
@@ -27,10 +26,8 @@ def process_command(game_state: dict, command: str):
         case "take":
             player_actions.take_item(game_state, item_name = arg)
         case "use":
-            pass
             player_actions.use_item(game_state, item_name = arg)
         case "solve":
-            pass
             utils.solve_puzzle(game_state)
         case "help":
             utils.show_help()
