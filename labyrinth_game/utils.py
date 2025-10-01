@@ -41,7 +41,7 @@ def solve_puzzle(game_state: dict) -> None:
             if current_room == "hall":
                 if "treasure key" not in game_state['player_inventory']:
                   game_state['player_inventory'].append("treasure key")
-                  print("В награду вы получаете: 'treasure_key'")
+                  print("В награду вы получаете: 'treasure key'")
             elif current_room == "library":
                 if "rusty key" not in game_state['player_inventory']:
                   game_state['player_inventory'].append("rusty key")
@@ -90,7 +90,7 @@ def attempt_open_treasure(game_state: dict):
         print("Сундук уже открыт или отсутствует.")
         return
     if (
-        'treasure_key' in game_state['player_inventory'] 
+        'treasure key' in game_state['player_inventory'] 
         or 'rusty key' in game_state['player_inventory']
     ):
         print("Вы применяете ключ, и замок щёлкает. Сундук открыт!")
