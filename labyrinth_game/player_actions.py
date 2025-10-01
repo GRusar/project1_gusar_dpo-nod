@@ -18,11 +18,22 @@ def get_input(prompt: str = "> "):
   
 def move_player(game_state: dict, direction: str):
     current_room = game_state['current_room']
-    room_info = game_state['rooms'][current_room]
+    current_room_info = game_state['rooms'][current_room]
 
-    if direction in room_info['exits']:
-        new_room = room_info['exits'][direction]
-        game_state['current_room'] = new_room
+    if direction in current_room_info['exits']:
+        next_room = current_room_info['exits'][direction]
+
+        if next_room == "treasure_room":
+            inventory = game_state['player_inventory']
+            if "treasure key" in inventory or "rusty key" in inventory:
+                print(
+                    "Вы используете найденный ключ, чтобы открыть путь"
+                    " в комнату сокровищ.")
+            else:
+                print("Дверь заперта. Нужен ключ, чтобы пройти дальше.")
+                return 
+
+        game_state['current_room'] = next_room
         game_state['steps_taken'] += 1
         utils.describe_current_room(game_state)
         utils.random_event(game_state)
@@ -34,7 +45,11 @@ def take_item(game_state: dict, item_name: str):
     room_info = game_state['rooms'][current_room]
 
     if item_name in room_info['items']:
-        if item_name not in game_state['player_inventory']:
+        if item_name == "treasure chest":
+            print("Сундук слишком тяжелый, чтобы его взять."
+                  " Попробуйте открыть его. (команда 'use treasure chest')")
+            return
+        elif item_name not in game_state['player_inventory']:
           game_state['player_inventory'].append(item_name)
           room_info['items'].remove(item_name)
           print(f"Вы взяли {item_name}.")

@@ -26,8 +26,12 @@ def solve_puzzle(game_state: dict) -> None:
     current_room = game_state['current_room']
     room_info = game_state['rooms'][current_room]
     puzzle = room_info['puzzle']
+
+    if current_room == "treasure_room" and "treasure chest" in room_info['items']:
+        attempt_open_treasure(game_state)
+    
     if not puzzle:
-        print("Загадок здесь нет.")
+        print("Загадок здесь нет.") 
     else:
         question, answer = puzzle
         print(f"Загадка: {question}")
@@ -143,7 +147,6 @@ def pseudo_random(seed: int, modulo: int) -> int:
     raw_value = math.sin(seed * 12.9898) * 43758.5453
     fractional_part = raw_value - math.floor(raw_value)
     to_return = int(fractional_part * modulo)
-    print(f"DEBUG: pseudo_random(seed={seed}, modulo={modulo}) -> {to_return}")
     return to_return
 
 def random_event(game_state: dict):
