@@ -1,4 +1,4 @@
-from . import constants, utils
+from . import utils
 
 
 def show_inventory(game_state: dict):
@@ -18,19 +18,20 @@ def get_input(prompt: str = "> "):
   
 def move_player(game_state: dict, direction: str):
     current_room = game_state['current_room']
-    room_info = constants.ROOMS[current_room]
+    room_info = game_state['rooms'][current_room]
 
     if direction in room_info['exits']:
         new_room = room_info['exits'][direction]
         game_state['current_room'] = new_room
         game_state['steps_taken'] += 1
         utils.describe_current_room(game_state)
+        utils.random_event(game_state)
     else:
         print("Нельзя пойти в этом направлении.")
 
 def take_item(game_state: dict, item_name: str):
     current_room = game_state['current_room']
-    room_info = constants.ROOMS[current_room]
+    room_info = game_state['rooms'][current_room]
 
     if item_name in room_info['items']:
         if item_name not in game_state['player_inventory']:
@@ -44,7 +45,7 @@ def take_item(game_state: dict, item_name: str):
 
 def use_item(game_state: dict, item_name: str):
     current_room = game_state['current_room']
-    room_info = constants.ROOMS[current_room]
+    room_info = game_state['rooms'][current_room]
     if current_room == 'treasure_room' and "treasure chest" in room_info['items']:
         utils.attempt_open_treasure(game_state)
         return
