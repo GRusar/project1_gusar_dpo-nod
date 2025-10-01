@@ -43,6 +43,11 @@ def take_item(game_state: dict, item_name: str):
         print("Такого предмета здесь нет.")
 
 def use_item(game_state: dict, item_name: str):
+    current_room = game_state['current_room']
+    room_info = constants.ROOMS[current_room]
+    if current_room == 'treasure_room' and "treasure chest" in room_info['items']:
+        utils.attempt_open_treasure(game_state)
+        return
     if item_name not in game_state['player_inventory']:
         print(f"У вас нет предмета '{item_name}' в инвентаре.")
     else:
