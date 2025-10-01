@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
+from copy import deepcopy
 
-from . import player_actions, utils
+from . import constants, player_actions, utils
 
 game_state = {
       'player_inventory': [], # Инвентарь игрока
       'current_room': 'entrance', # Текущая комната
       'game_over': False, # Значения окончания игры
-      'steps_taken': 0 # Количество шагов
+      'steps_taken': 0, # Количество шагов
+
+      # "Глубокая" копия комнат для текущей игровой сессии
+      'rooms' : deepcopy(constants.ROOMS) 
 }
 
 def process_command(game_state: dict, command: str):
@@ -28,15 +32,24 @@ def process_command(game_state: dict, command: str):
         case "use":
             player_actions.use_item(game_state, item_name = arg)
         case "solve":
-            utils.solve_puzzle(game_state)
+            current_room = game_state['current_room']
+            room_info = game_state['rooms'][current_room]
+            if (current_room == "treasure_room" 
+                and "treasure chest" in room_info['items']):
+                utils.attempt_open_treasure(game_state)
+            else:
+                utils.solve_puzzle(game_state)
         case "help":
             utils.show_help()
         case "quit" | "exit":
             game_state['game_over'] = True
             print("Спасибо за игру!")
         case _:
-            print("Неизвестная команда. ")
-            utils.show_help()
+            if action in constants.DIRECTIONS:
+                player_actions.move_player(game_state, direction = action)
+            else:
+              print("Неизвестная команда. ")
+              utils.show_help()
 
 def main():
   print("Добро пожаловать в Лабиринт сокровищ!")
