@@ -5,13 +5,14 @@ from . import player_actions, utils
 game_state = {
       'player_inventory': [], # Инвентарь игрока
       'current_room': 'entrance', # Текущая комната
+      # 'current_room': 'treasure_room', # TEST: Текущая комната
       'game_over': False, # Значения окончания игры
       'steps_taken': 0 # Количество шагов
 }
 
 def process_command(game_state: dict, command: str):
-    action, *args = command.strip().lower().split()
-    arg = args[0] if args else None
+    action, *args = command.strip().lower().split(maxsplit=1)
+    arg = args[0].replace("_", " ") if args else None
 
     match action:
         case "go":
