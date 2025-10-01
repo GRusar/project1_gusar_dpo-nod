@@ -26,9 +26,6 @@ def solve_puzzle(game_state: dict) -> None:
     current_room = game_state['current_room']
     room_info = game_state['rooms'][current_room]
     puzzle = room_info['puzzle']
-
-    if current_room == "treasure_room" and "treasure chest" in room_info['items']:
-        attempt_open_treasure(game_state)
     
     if not puzzle:
         print("Загадок здесь нет.") 
@@ -52,6 +49,9 @@ def solve_puzzle(game_state: dict) -> None:
             else:
               give_puzzle_reward(game_state)
         else:
+            if current_room == "trap_room":
+                trigger_trap(game_state)
+                return
             print("Неверно. Попробуйте снова.")
 
 def give_puzzle_reward(game_state: dict):

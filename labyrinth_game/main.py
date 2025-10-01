@@ -32,7 +32,13 @@ def process_command(game_state: dict, command: str):
         case "use":
             player_actions.use_item(game_state, item_name = arg)
         case "solve":
-            utils.solve_puzzle(game_state)
+            current_room = game_state['current_room']
+            room_info = game_state['rooms'][current_room]
+            if (current_room == "treasure_room" 
+                and "treasure chest" in room_info['items']):
+                utils.attempt_open_treasure(game_state)
+            else:
+                utils.solve_puzzle(game_state)
         case "help":
             utils.show_help()
         case "quit" | "exit":
