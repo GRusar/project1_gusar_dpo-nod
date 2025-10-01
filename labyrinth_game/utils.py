@@ -33,13 +33,24 @@ def solve_puzzle(game_state: dict) -> None:
     if not puzzle:
         print("Загадок здесь нет.") 
     else:
-        question, answer = puzzle
+        question, answers = puzzle
+        normalized_answers = (ans.lower() for ans in answers)
         print(f"Загадка: {question}")
         player_answer = player_actions.get_input("Ваш ответ: ")
-        if player_answer.strip().lower() == answer.lower():
+        right_answer = player_answer.strip().lower() in normalized_answers
+        if right_answer:
             print("Правильно! Вы решили загадку.")
             room_info['puzzle'] = None
-            give_puzzle_reward(game_state)
+            if current_room == "hall":
+                if "treasure key" not in game_state['player_inventory']:
+                  game_state['player_inventory'].append("treasure key")
+                  print("В награду вы получаете: 'treasure_key'")
+            elif current_room == "library":
+                if "rusty key" not in game_state['player_inventory']:
+                  game_state['player_inventory'].append("rusty key")
+                  print("В награду вы получаете: 'rusty key'")
+            else:
+              give_puzzle_reward(game_state)
         else:
             print("Неверно. Попробуйте снова.")
 
