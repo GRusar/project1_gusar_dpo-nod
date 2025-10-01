@@ -4,6 +4,9 @@ from . import constants, player_actions
 
 
 def show_help(commands: dict = constants.COMMANDS) -> None:
+    """
+    Выводит справку по доступным командам.
+    """
     print("\nДоступные команды:")
     for command, description in commands.items():
         print(
@@ -11,6 +14,9 @@ def show_help(commands: dict = constants.COMMANDS) -> None:
         )
 
 def describe_current_room(game_state: dict) -> None:
+    """
+    Выводит описание текущей комнаты, включая доступные выходы,
+    заметные предметы и наличие загадки."""
     current_room = game_state['current_room']
     room_info = game_state['rooms'][current_room]
     print(f"Вы находитесь в комнате: {current_room.upper()}")
@@ -24,6 +30,11 @@ def describe_current_room(game_state: dict) -> None:
         print("Кажется, здесь есть загадка (используйте команду solve).")
 
 def solve_puzzle(game_state: dict) -> None:
+    """
+    Решение загадки в текущей комнате.
+    Если загадка решена, она удаляется из комнаты,
+    и игрок получает награду.
+    """
     current_room = game_state['current_room']
     room_info = game_state['rooms'][current_room]
     puzzle = room_info['puzzle']
@@ -55,12 +66,16 @@ def solve_puzzle(game_state: dict) -> None:
                 return
             print("Неверно. Попробуйте снова.")
 
-def give_puzzle_reward(game_state: dict):
+def give_puzzle_reward(game_state: dict) -> None:
+    """
+    Выдаёт игроку случайный предмет из всех комнат, кроме 'treasure chest'.
+    Если все предметы уже в инвентаре, награды нет.
+    """
     available_items = all_items_except_treasure(constants.ROOMS)
     if available_items:
         random_reward = pseudo_random(
-            seed = game_state['steps_taken'], 
-            modulo = len(available_items)
+            seed=game_state['steps_taken'],
+            modulo=len(available_items)
         )
         reward_item = available_items[random_reward]
         if reward_item not in game_state['player_inventory']:
@@ -83,7 +98,12 @@ def all_items_except_treasure(rooms: dict) -> list[str]:
                 items.append(item)
     return items
 
-def attempt_open_treasure(game_state: dict):
+def attempt_open_treasure(game_state: dict) -> None:
+    """
+    Попытка открыть сундук с сокровищами.
+    Если у игрока есть ключ, сундук открывается.
+    Если нет, игроку предлагается ввести код.
+    """
     current_room = game_state['current_room']
     room_info = game_state['rooms'][current_room]
     
@@ -124,29 +144,32 @@ def attempt_open_treasure(game_state: dict):
             case _:
               print("Ответ не распознан. Вы отступаете от сундука.")
 
-def trigger_trap(game_state: dict):
+def trigger_trap(game_state: dict) -> None:
+    """
+    Срабатывание ловушки.
+
+    Если у игрока есть факел, ловушка не срабатывает.
+    Если нет, игрок либо теряет случайный предмет из инвентаря,
+    либо с некоторой вероятностью получает травму 
+    и игра заканчивается.
+    """
     print("Ловушка активирована! Пол стал дрожать...")
     inventory = game_state['player_inventory']
     if inventory:
         seed = game_state['steps_taken']
-        intem_index = pseudo_random(seed = seed, modulo = len(inventory))
-        lost_item = inventory.pop(intem_index)
+        item_index = pseudo_random(seed=seed, modulo=len(inventory))
+        lost_item = inventory.pop(item_index)
         print(f"Вы потеряли предмет: {lost_item}")
     else:
         damage_probability = pseudo_random(
-            seed = game_state['steps_taken'],
-            modulo = constants.TRAP_DAMAGE_MODULO,
+            seed=game_state['steps_taken'],
+            modulo=constants.TRAP_DAMAGE_MODULO,
         )
         if damage_probability < constants.TRAP_DAMAGE_THRESHOLD:
             print("Вы получили травму от ловушки и не можете продолжать!")
             game_state['game_over'] = True
         else:
             print("Вы уцелели в ловушке!")
-
-def frighten_player(game_state: dict):
-    print("Вы слышите шорох! Что-то приближается...")
-    if 'sword' in game_state['player_inventory']:
-        print("К счастью, у вас есть меч, который отпугнул существо.")
 
 def pseudo_random(seed: int, modulo: int) -> int:
     """
@@ -161,12 +184,12 @@ def pseudo_random(seed: int, modulo: int) -> int:
     to_return = int(fractional_part * modulo)
     return to_return
 
-def random_event(game_state: dict):
-    current_probaility = pseudo_random(
-        seed = game_state['steps_taken'],
-        modulo = constants.RANDOM_EVENT_PROBABILITY
+def random_event(game_state: dict) -> None:
+    current_probability = pseudo_random(
+        seed=game_state['steps_taken'],
+        modulo=constants.RANDOM_EVENT_PROBABILITY
     )
-    will_event_happen = current_probaility == constants.RANDOM_EVENT_TRIGGER_THRESHOLD
+    will_event_happen = current_probability == constants.RANDOM_EVENT_TRIGGER_THRESHOLD
     if will_event_happen:
         inventory_size = len(game_state['player_inventory'])
         scenario_seed = (
@@ -178,8 +201,8 @@ def random_event(game_state: dict):
             + constants.EVENT_SCENARIO_ADDITIVE_SHIFT
         )
         event_index = pseudo_random(
-            seed = scenario_seed,
-            modulo = len(constants.RANDOM_EVENT_SCENARIOS)
+            seed=scenario_seed,
+            modulo=len(constants.RANDOM_EVENT_SCENARIOS)
         )
         event = constants.RANDOM_EVENT_SCENARIOS[event_index]
 
@@ -190,7 +213,9 @@ def random_event(game_state: dict):
                 print("Вы нашли монетку на полу!")
                 room_info['items'].append("coin")
             case "fright":
-                frighten_player(game_state)
+                print("Вы слышите шорох! Что-то приближается...")
+                if 'sword' in game_state['player_inventory']:
+                    print("К счастью, у вас есть меч, который отпугнул существо.")
             case "trap":
                 if (
                     game_state['current_room'] == "trap_room"
