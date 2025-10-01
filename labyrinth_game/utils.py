@@ -1,5 +1,5 @@
+import math
 from . import constants, player_actions
-
 
 def show_help():
     print("\nДоступные команды:")
@@ -77,4 +77,31 @@ def attempt_open_treasure(game_state: dict):
               print("Вы отступаете от сундука.")
             case _:
               print("Ответ не распознан. Вы отступаете от сундука.")
-    
+
+def trigger_trap(game_state: dict):
+    print("Ловушка активирована! Пол стал дрожать...")
+    inventory = game_state['player_inventory']
+    if inventory:
+        seed = game_state['steps_taken']
+        intem_index = pseudo_random(seed = seed, modulo = len(inventory))
+        lost_item = inventory.pop(intem_index)
+        print(f"Вы потеряли предмет: {lost_item}")
+    else:
+        damage_probability = pseudo_random(seed = game_state['steps_taken'], modulo = 9)
+        if damage_probability < 3:
+            print("Вы получили травму от ловушки и не можете продолжать!")
+            game_state['game_over'] = True
+        else:
+            print("Вы уцелели в ловушке!")
+
+def pseudo_random(seed: int, modulo: int) -> int:
+    """
+    Генерация детерминированного псевдослучайного числа на основе синусойды.
+
+    :param seed: целое число, используемое для инициализации генератора
+    :param modulo: целое число, задающее диапазон результата (от 0 до modulo-1)
+    :return: псевдослучайное целое число в диапазоне [0, modulo)
+    """
+    raw_value = math.sin(seed * 12.9898) * 43758.5453
+    fractional_part = raw_value - math.floor(raw_value)
+    return int(fractional_part * modulo)
