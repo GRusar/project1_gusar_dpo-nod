@@ -164,8 +164,14 @@ def random_event(game_state: dict):
     )
     will_event_happen = current_probaility == constants.RANDOM_EVENT_TRIGGER_THRESHOLD
     if will_event_happen:
+        inventory_size = len(game_state['player_inventory'])
+        scenario_seed = (
+            (game_state['steps_taken'] + 1)
+            * (inventory_size + 1)
+            + 17
+        )
         event_index = pseudo_random(
-            seed = game_state['steps_taken'],
+            seed = scenario_seed,
             modulo = len(constants.RANDOM_EVENT_SCENARIOS)
         )
         event = constants.RANDOM_EVENT_SCENARIOS[event_index]
