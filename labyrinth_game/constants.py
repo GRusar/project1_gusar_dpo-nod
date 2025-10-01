@@ -43,7 +43,7 @@ RANDOM_EVENT_SCENARIOS - список возможных сценариев сл
 """
 RANDOM_EVENT_PROBABILITY = 10
 RANDOM_EVENT_TRIGGER_THRESHOLD = 0
-RANDOM_EVENT_SCENARIOS = ["trap", "find_item", "fright"]
+RANDOM_EVENT_SCENARIOS = ["trap", "find_coin", "fright"]
 
 
 """Описание комнат лабиринта

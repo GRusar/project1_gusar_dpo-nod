@@ -106,11 +106,16 @@ def attempt_open_treasure(game_state: dict):
             case "да":
                 code = player_actions.get_input("Введите код: ")
                 puzzle = room_info['puzzle']
-                if puzzle and code.strip().lower() == puzzle[1].lower():
-                    print("Код верный! Сундук открыт!")
-                    room_info['items'].remove('treasure chest')
-                    print("В сундуке сокровище! Вы победили!")
-                    game_state['game_over'] = True
+                if puzzle:
+                    normalized_code = code.strip().lower()
+                    valid_codes = (answer.lower() for answer in puzzle[1])
+                    if normalized_code in valid_codes:
+                        print("Код верный! Сундук открыт!")
+                        room_info['items'].remove('treasure chest')
+                        print("В сундуке сокровище! Вы победили!")
+                        game_state['game_over'] = True
+                    else:
+                        print("Неверный код.")
                 else:
                     print("Неверный код.")
             case "нет":
@@ -133,14 +138,6 @@ def trigger_trap(game_state: dict):
             game_state['game_over'] = True
         else:
             print("Вы уцелели в ловушке!")
-
-def find_coin(game_state: dict):
-    print("Вы нашли монетку на полу!")
-    if 'coin' not in game_state['player_inventory']:
-        game_state['player_inventory'].append('coin')
-        print("Монетка добавлена в ваш инвентарь.")
-    else:
-        print("У вас уже есть монетка.")
 
 def frighten_player(game_state: dict):
     print("Вы слышите шорох! Что-то приближается...")
@@ -172,10 +169,18 @@ def random_event(game_state: dict):
             modulo = len(constants.RANDOM_EVENT_SCENARIOS)
         )
         event = constants.RANDOM_EVENT_SCENARIOS[event_index]
+
+        current_room = game_state['current_room']
+        room_info = game_state['rooms'][current_room]
         match event:
-            case "trap":
-                trigger_trap(game_state)
-            case "find_item":
-                find_coin(game_state)
+            case "find_coin":
+                print("Вы нашли монетку на полу!")
+                room_info['items'].append("coin")
             case "fright":
                 frighten_player(game_state)
+            case "trap":
+                if (
+                    game_state['current_room'] == "trap_room"
+                    and "torch" not in game_state['player_inventory']
+                ):
+                  trigger_trap(game_state)
