@@ -14,6 +14,11 @@ game_state = {
 }
 
 def process_command(game_state: dict, command: str):
+    """Обрабатывает команду игрока.
+    Args:
+        game_state (dict): Текущее состояние игры.
+        command (str): Команда, введенная игроком.
+    """
     action, *args = command.strip().lower().split(maxsplit=1)
     arg = args[0].replace("_", " ") if args else None
 
@@ -22,15 +27,15 @@ def process_command(game_state: dict, command: str):
             if not arg:
                 print("Укажите направление.")
                 return
-            player_actions.move_player(game_state, direction = arg)
+            player_actions.move_player(game_state, direction=arg)
         case "inventory":
             player_actions.show_inventory(game_state)
         case "look":
             utils.describe_current_room(game_state)
         case "take":
-            player_actions.take_item(game_state, item_name = arg)
+            player_actions.take_item(game_state, item_name=arg)
         case "use":
-            player_actions.use_item(game_state, item_name = arg)
+            player_actions.use_item(game_state, item_name=arg)
         case "solve":
             current_room = game_state['current_room']
             room_info = game_state['rooms'][current_room]
@@ -46,12 +51,13 @@ def process_command(game_state: dict, command: str):
             print("Спасибо за игру!")
         case _:
             if action in constants.DIRECTIONS:
-                player_actions.move_player(game_state, direction = action)
+                player_actions.move_player(game_state, direction=action)
             else:
               print("Неизвестная команда. ")
               utils.show_help()
 
 def main():
+  """Главная функция игры"""
   print("Добро пожаловать в Лабиринт сокровищ!")
   utils.describe_current_room(game_state)
 
