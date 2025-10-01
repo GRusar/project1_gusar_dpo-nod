@@ -2,16 +2,14 @@ import math
 from . import constants, player_actions
 
 
-def show_help():
-    print("\nДоступные команды:")
-    print("  go <direction>  - перейти в направлении (north/south/east/west)")
-    print("  look            - осмотреть текущую комнату")
-    print("  take <item>     - поднять предмет")
-    print("  use <item>      - использовать предмет из инвентаря")
-    print("  inventory       - показать инвентарь")
-    print("  solve           - попытаться решить загадку в комнате")
-    print("  quit            - выйти из игры")
-    print("  help            - показать это сообщение") 
+def show_help(commands: dict = constants.COMMANDS) -> None:
+    alignment = ' ' * 16
+    max_command_len = max(len(cmd) for cmd in commands)
+
+    print(f"\n{alignment * 2}Доступные команды:")
+    for command, description in commands.items():
+        padding = " " * (max_command_len - len(command) + 6)
+        print(f"{alignment}{command}{padding}{description}")
 
 def describe_current_room(game_state: dict) -> None:
     current_room = game_state['current_room']
