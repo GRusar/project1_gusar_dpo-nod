@@ -4,10 +4,11 @@ from . import constants, player_actions
 
 
 def show_help(commands: dict = constants.COMMANDS) -> None:
-    ALIGNMENT = 16
     print("\nДоступные команды:")
     for command, description in commands.items():
-        print(f"{command.ljust(ALIGNMENT, ' ')}{description}")
+        print(
+            f"{command.ljust(constants.HELP_ALIGNMENT, ' ')}{description}"
+        )
 
 def describe_current_room(game_state: dict) -> None:
     current_room = game_state['current_room']
@@ -132,8 +133,11 @@ def trigger_trap(game_state: dict):
         lost_item = inventory.pop(intem_index)
         print(f"Вы потеряли предмет: {lost_item}")
     else:
-        damage_probability = pseudo_random(seed = game_state['steps_taken'], modulo = 9)
-        if damage_probability < 3:
+        damage_probability = pseudo_random(
+            seed = game_state['steps_taken'],
+            modulo = constants.TRAP_DAMAGE_MODULO,
+        )
+        if damage_probability < constants.TRAP_DAMAGE_THRESHOLD:
             print("Вы получили травму от ловушки и не можете продолжать!")
             game_state['game_over'] = True
         else:
@@ -166,9 +170,12 @@ def random_event(game_state: dict):
     if will_event_happen:
         inventory_size = len(game_state['player_inventory'])
         scenario_seed = (
-            (game_state['steps_taken'] + 1)
-            * (inventory_size + 1)
-            + 17
+            (game_state['steps_taken'] + constants.EVENT_SCENARIO_STEP_OFFSET)
+            * (
+                inventory_size
+                + constants.EVENT_SCENARIO_INVENTORY_SCALE
+            )
+            + constants.EVENT_SCENARIO_ADDITIVE_SHIFT
         )
         event_index = pseudo_random(
             seed = scenario_seed,

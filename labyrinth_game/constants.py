@@ -4,6 +4,7 @@
 """
 
 """Команды игрока
+
 COMMANDS - словарь доступных команд и их описаний"""
 COMMANDS = {
     "go <direction>": "Перейти в направлении (north/south/east/west)",
@@ -32,6 +33,7 @@ west  = DIRECTIONS["west"]
 
 
 """Случайные события
+
 RANDOM_EVENT_PROBABILITY - верхний порог для генерации случайного числа 
 для наступления случайного события
 
@@ -46,7 +48,25 @@ RANDOM_EVENT_TRIGGER_THRESHOLD = 0
 RANDOM_EVENT_SCENARIOS = ["trap", "find_coin", "fright"]
 
 
+"""Параметры форматирования и случайных событий.
+
+HELP_ALIGNMENT - ширина поля для выравнивания справки по командам.
+EVENT_SCENARIO_STEP_OFFSET - смещение количества шагов при генерации сценария.
+EVENT_SCENARIO_INVENTORY_SCALE - множитель, учитывающий размер инвентаря.
+EVENT_SCENARIO_ADDITIVE_SHIFT - дополнительное смещение для устойчивого seed.
+TRAP_DAMAGE_MODULO - диапазон генерации вероятности урона ловушки.
+TRAP_DAMAGE_THRESHOLD - порог, ниже которого игрок получает травму.
+"""
+HELP_ALIGNMENT = 16
+EVENT_SCENARIO_STEP_OFFSET = 1
+EVENT_SCENARIO_INVENTORY_SCALE = 1
+EVENT_SCENARIO_ADDITIVE_SHIFT = 17
+TRAP_DAMAGE_MODULO = 9
+TRAP_DAMAGE_THRESHOLD = 3
+
+
 """Описание комнат лабиринта
+
 Каждая комната представлена словарём с ключами:
 - description: текстовое описание комнаты
 - exits: словарь с направлениями и названиями комнат, куда можно выйти
