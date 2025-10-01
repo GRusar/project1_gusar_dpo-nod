@@ -1,6 +1,7 @@
 import math
 from . import constants, player_actions
 
+
 def show_help():
     print("\nДоступные команды:")
     print("  go <direction>  - перейти в направлении (north/south/east/west)")
@@ -38,9 +39,37 @@ def solve_puzzle(game_state: dict) -> None:
         if player_answer.strip().lower() == answer.lower():
             print("Правильно! Вы решили загадку.")
             room_info['puzzle'] = None
-            # TODO: Нужно добавить награду за решение загадки
+            give_puzzle_reward(game_state)
         else:
             print("Неверно. Попробуйте снова.")
+
+def give_puzzle_reward(game_state: dict):
+    available_items = all_items_except_treasure(constants.ROOMS)
+    if available_items:
+        random_reward = pseudo_random(
+            seed = game_state['steps_taken'], 
+            modulo = len(available_items)
+        )
+        reward_item = available_items[random_reward]
+        if reward_item not in game_state['player_inventory']:
+          game_state['player_inventory'].append(reward_item)
+          print(f"В награду вы получаете: {reward_item}")
+        else:
+          print(f"В награду вы получаете: {reward_item}, но он уже у вас есть.")
+    else:
+        print("Вы уже собрали все доступные предметы. Награды нет.")
+
+def all_items_except_treasure(rooms: dict) -> list[str]:
+    """
+    Возвращает список всех предметов из всех комнат,
+    кроме 'treasure chest'.
+    """
+    items = []
+    for room in rooms.values():
+        for item in room.get("items", []):
+            if item != "treasure chest":
+                items.append(item)
+    return items
 
 def attempt_open_treasure(game_state: dict):
     current_room = game_state['current_room']
