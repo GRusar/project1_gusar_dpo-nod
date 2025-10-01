@@ -17,6 +17,20 @@ COMMANDS = {
 }
 
 
+"""Направления движения
+DIRECTIONS - допустимые направления движения игрока"""
+DIRECTIONS = {
+  "north" : "north",
+  "south" : "south",
+  "east"  : "east",
+  "west"  : "west",
+}
+north = DIRECTIONS["north"]
+south = DIRECTIONS["south"]
+east  = DIRECTIONS["east"]
+west  = DIRECTIONS["west"]
+
+
 """Случайные события
 RANDOM_EVENT_PROBABILITY - верхний порог для генерации случайного числа 
 для наступления случайного события
@@ -42,7 +56,7 @@ RANDOM_EVENT_SCENARIOS = ["trap", "find_item", "fright"]
 ROOMS = {
     'entrance': {
         'description': 'Вы в темном входе лабиринта...',
-        'exits': {'north': 'hall', 'east': 'trap_room'},
+        'exits': {north: 'hall', east: 'trap_room'},
         'items': ['torch'],
         'puzzle': None
     },
@@ -50,7 +64,7 @@ ROOMS = {
         'description': (
           'Большой зал с эхом. По центру стоит пьедестал с запечатанным сундуком.'
         ),
-        'exits': {'south': 'entrance', 'west': 'library', 'north': 'treasure_room'},
+        'exits': {south: 'entrance', west: 'library', north: 'treasure_room'},
         'items': [],
         'puzzle': (
           (
@@ -64,7 +78,7 @@ ROOMS = {
             'Комната с хитрой плиточной поломкой. '
             'На стене видна надпись: "Осторожно — ловушка".'
           ),
-          'exits': {'west': 'entrance'},
+          'exits': {west: 'entrance'},
           'items': ['rusty key'],
           'puzzle': (
             (
@@ -78,7 +92,7 @@ ROOMS = {
             'Пыльная библиотека. На полках старые свитки. '
             'Где-то здесь может быть ключ от сокровищницы.'
           ),
-          'exits': {'east': 'hall', 'north': 'armory', 'west': 'garden'},
+          'exits': {east: 'hall', north: 'armory', west: 'garden'},
           'items': ['ancient book'],
           'puzzle': (
             (
@@ -92,14 +106,14 @@ ROOMS = {
               'Старая оружейная комната. На стене висит меч, '
               'рядом — небольшая бронзовая шкатулка.'
             ),
-          'exits': {'south': 'library', 'west': 'dungeon'},
+          'exits': {south: 'library', west: 'dungeon'},
           'items': ['sword', 'bronze box'],
           'puzzle': None
     },
     'treasure_room': {
           'description': 
             'Комната, на столе большой сундук. Дверь заперта — нужен особый ключ.',
-          'exits': {'south': 'hall'},
+          'exits': {south: 'hall'},
           'items': ['treasure chest'],
           'puzzle': (
             (
@@ -114,7 +128,7 @@ ROOMS = {
           'Сырой подвал с цепями на стенах. Слышны капли воды. '
           'В углу — ржавая решетка.'
         ),
-        'exits': {'east': 'armory'},
+        'exits': {east: 'armory'},
         'items': ['ancient book'],
         'puzzle': (
             'Что можно увидеть с закрытыми глазами? (одно слово)',
@@ -126,7 +140,7 @@ ROOMS = {
           'Таинственный сад внутри лабиринта. Здесь пахнет цветами, '
           'но слышен шорох листвы.'
         ),
-        'exits': {'east': 'library'},
+        'exits': {east: 'library'},
         'items': ['magic seed'],
         'puzzle': (
           'На камне написано: "Что всегда смотрит на солнце?"',

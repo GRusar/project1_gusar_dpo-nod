@@ -45,8 +45,11 @@ def process_command(game_state: dict, command: str):
             game_state['game_over'] = True
             print("Спасибо за игру!")
         case _:
-            print("Неизвестная команда. ")
-            utils.show_help()
+            if action in constants.DIRECTIONS:
+                player_actions.move_player(game_state, direction = action)
+            else:
+              print("Неизвестная команда. ")
+              utils.show_help()
 
 def main():
   print("Добро пожаловать в Лабиринт сокровищ!")
