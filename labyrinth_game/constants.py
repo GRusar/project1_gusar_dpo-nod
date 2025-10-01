@@ -79,7 +79,7 @@ ROOMS = {
             'Пыльная библиотека. На полках старые свитки. '
             'Где-то здесь может быть ключ от сокровищницы.'
           ),
-          'exits': {'east': 'hall', 'north': 'armory'},
+          'exits': {'east': 'hall', 'north': 'armory', 'west': 'garden'},
           'items': ['ancient book'],
           'puzzle': (
             (
@@ -94,7 +94,7 @@ ROOMS = {
               'Старая оружейная комната. На стене висит меч, '
               'рядом — небольшая бронзовая шкатулка.'
             ),
-          'exits': {'south': 'library'},
+          'exits': {'south': 'library', 'west': 'dungeon'},
           'items': ['sword', 'bronze box'],
           'puzzle': None
     },
@@ -116,8 +116,8 @@ ROOMS = {
           'Сырой подвал с цепями на стенах. Слышны капли воды. '
           'В углу — ржавая решетка.'
         ),
-        'exits': {'up': 'library'},
-        'items': ['iron key'],
+        'exits': {'east': 'armory'},
+        'items': ['ancient book'],
         'puzzle': (
           (
             'На решетке надпись: "Скажи слово, которое звучит одинаково '
@@ -131,7 +131,7 @@ ROOMS = {
           'Таинственный сад внутри лабиринта. Здесь пахнет цветами, '
           'но слышен шорох листвы.'
         ),
-        'exits': {'west': 'treasure_room'},
+        'exits': {'east': 'library'},
         'items': ['magic seed'],
         'puzzle': (
           'На камне написано: "Что всегда смотрит на солнце?"',
