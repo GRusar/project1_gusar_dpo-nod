@@ -8,6 +8,7 @@
 COMMANDS - словарь доступных команд и их описаний"""
 COMMANDS = {
     "go <direction>": "Перейти в направлении (north/south/east/west)",
+    "<direction>": "Перейти в направлении (north/south/east/west)",         
     "look": "Осмотреть текущую комнату",
     "take <item>": "Поднять предмет",
     "use <item>": "Использовать предмет из инвентаря",

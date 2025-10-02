@@ -2,6 +2,8 @@ from . import utils
 
 
 def show_inventory(game_state: dict):
+    """
+    Показывает содержимое инвентаря игрока."""
     inventory = game_state['player_inventory']
     if inventory:
         print("Ваш инвентарь:", ', '.join(inventory))
@@ -9,14 +11,19 @@ def show_inventory(game_state: dict):
         print("Кажется, ваш инвентарь пуст.")
 
 def get_input(prompt: str = "> "):
-  try:
-      print(prompt, end='', flush=True)
-      return input()
-  except (KeyboardInterrupt, EOFError):
-      print("\nВыход из игры.")
-      return "quit" 
+    """Получает ввод от игрока"""
+    try:
+        print(prompt, end='', flush=True)
+        return input()
+    except (KeyboardInterrupt, EOFError):
+        print("\nВыход из игры.")
+        return "quit" 
+    except UnicodeDecodeError:
+        print("\nНе удалось распознать ввод. Попробуем еще раз.")
+        return get_input(prompt)
   
 def move_player(game_state: dict, direction: str):
+    """Перемещает игрока в указанном направлении, если это возможно."""
     current_room = game_state['current_room']
     current_room_info = game_state['rooms'][current_room]
 
@@ -41,6 +48,7 @@ def move_player(game_state: dict, direction: str):
         print("Нельзя пойти в этом направлении.")
 
 def take_item(game_state: dict, item_name: str):
+    """Позволяет игроку взять предмет из текущей комнаты."""
     current_room = game_state['current_room']
     room_info = game_state['rooms'][current_room]
 
@@ -59,9 +67,15 @@ def take_item(game_state: dict, item_name: str):
         print("Такого предмета здесь нет.")
 
 def use_item(game_state: dict, item_name: str):
+    """
+    Позволяет игроку использовать предмет из инвентаря.
+    Некоторые предметы могут иметь особые эффекты в определенных комнатах.
+    """
     current_room = game_state['current_room']
     room_info = game_state['rooms'][current_room]
-    if current_room == 'treasure_room' and "treasure chest" in room_info['items']:
+    if (current_room == 'treasure_room' 
+        and "treasure chest" in room_info['items']
+        and item_name == "treasure chest"):
         utils.attempt_open_treasure(game_state)
         return
     if item_name not in game_state['player_inventory']:

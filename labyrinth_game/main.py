@@ -1,19 +1,14 @@
 #!/usr/bin/env python3
-from copy import deepcopy
 
 from . import constants, player_actions, utils
 
-game_state = {
-      'player_inventory': [], # Инвентарь игрока
-      'current_room': 'entrance', # Текущая комната
-      'game_over': False, # Значения окончания игры
-      'steps_taken': 0, # Количество шагов
-
-      # "Глубокая" копия комнат для текущей игровой сессии
-      'rooms' : deepcopy(constants.ROOMS) 
-}
 
 def process_command(game_state: dict, command: str):
+    """Обрабатывает команду игрока.
+    Args:
+        game_state (dict): Текущее состояние игры.
+        command (str): Команда, введенная игроком.
+    """
     action, *args = command.strip().lower().split(maxsplit=1)
     arg = args[0].replace("_", " ") if args else None
 
@@ -22,15 +17,15 @@ def process_command(game_state: dict, command: str):
             if not arg:
                 print("Укажите направление.")
                 return
-            player_actions.move_player(game_state, direction = arg)
+            player_actions.move_player(game_state, direction=arg)
         case "inventory":
             player_actions.show_inventory(game_state)
         case "look":
             utils.describe_current_room(game_state)
         case "take":
-            player_actions.take_item(game_state, item_name = arg)
+            player_actions.take_item(game_state, item_name=arg)
         case "use":
-            player_actions.use_item(game_state, item_name = arg)
+            player_actions.use_item(game_state, item_name=arg)
         case "solve":
             current_room = game_state['current_room']
             room_info = game_state['rooms'][current_room]
@@ -46,13 +41,25 @@ def process_command(game_state: dict, command: str):
             print("Спасибо за игру!")
         case _:
             if action in constants.DIRECTIONS:
-                player_actions.move_player(game_state, direction = action)
+                player_actions.move_player(game_state, direction=action)
             else:
               print("Неизвестная команда. ")
               utils.show_help()
 
 def main():
+  """Главная функция игры"""
   print("Добро пожаловать в Лабиринт сокровищ!")
+
+  game_state = {
+      'player_inventory': [], # Инвентарь игрока
+      'current_room': 'entrance', # Текущая комната
+      'game_over': False, # Значения окончания игры
+      'steps_taken': 0, # Количество шагов
+
+      # Кастомная "глубокая" копия комнат для текущей игровой сессии
+      'rooms' : utils.clone_rooms(constants.ROOMS) 
+  } 
+  
   utils.describe_current_room(game_state)
 
   while not game_state['game_over']:
