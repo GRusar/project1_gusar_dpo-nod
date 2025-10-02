@@ -2,6 +2,7 @@
 
 from . import constants, player_actions, utils
 
+
 def process_command(game_state: dict, command: str):
     """Обрабатывает команду игрока.
     Args:
