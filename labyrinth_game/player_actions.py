@@ -18,6 +18,9 @@ def get_input(prompt: str = "> "):
     except (KeyboardInterrupt, EOFError):
         print("\nВыход из игры.")
         return "quit" 
+    except UnicodeDecodeError:
+        print("\nНе удалось распознать ввод. Попробуем еще раз.")
+        return get_input(prompt)
   
 def move_player(game_state: dict, direction: str):
     """Перемещает игрока в указанном направлении, если это возможно."""
