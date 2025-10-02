@@ -1,7 +1,7 @@
 [project]
 name = "project1_Gusar_dpo-nod"
 version = "0.1.0"
-description = ""
+description = "A text adventure in which you explore an ancient maze, solve Puzzles, avoid traps, and find your way to treasure."
 authors = [
     {name = "Roman G",email = "gusar.roman.a@gmail.com"}
 ]
