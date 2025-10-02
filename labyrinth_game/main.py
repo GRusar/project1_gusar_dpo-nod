@@ -2,16 +2,6 @@
 
 from . import constants, player_actions, utils
 
-game_state = {
-      'player_inventory': [], # Инвентарь игрока
-      'current_room': 'entrance', # Текущая комната
-      'game_over': False, # Значения окончания игры
-      'steps_taken': 0, # Количество шагов
-
-      # Кастомная "глубокая" копия комнат для текущей игровой сессии
-      'rooms' : utils.clone_rooms(constants.ROOMS) 
-}
-
 def process_command(game_state: dict, command: str):
     """Обрабатывает команду игрока.
     Args:
@@ -58,6 +48,17 @@ def process_command(game_state: dict, command: str):
 def main():
   """Главная функция игры"""
   print("Добро пожаловать в Лабиринт сокровищ!")
+
+  game_state = {
+      'player_inventory': [], # Инвентарь игрока
+      'current_room': 'entrance', # Текущая комната
+      'game_over': False, # Значения окончания игры
+      'steps_taken': 0, # Количество шагов
+
+      # Кастомная "глубокая" копия комнат для текущей игровой сессии
+      'rooms' : utils.clone_rooms(constants.ROOMS) 
+  } 
+  
   utils.describe_current_room(game_state)
 
   while not game_state['game_over']:
