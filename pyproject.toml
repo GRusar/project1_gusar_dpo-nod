@@ -14,8 +14,8 @@ dependencies = [
 ruff = "^0.13.2"
 
 [tool.poetry]
- packages = [
-     { include = "labyrinth_game" },
+packages = [
+    { include = "labyrinth_game" },
  ]
 
 [tool.poetry.scripts]
