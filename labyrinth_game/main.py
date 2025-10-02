@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from copy import deepcopy
 
 from . import constants, player_actions, utils
 
@@ -9,8 +8,8 @@ game_state = {
       'game_over': False, # Значения окончания игры
       'steps_taken': 0, # Количество шагов
 
-      # "Глубокая" копия комнат для текущей игровой сессии
-      'rooms' : deepcopy(constants.ROOMS) 
+      # Кастомная "глубокая" копия комнат для текущей игровой сессии
+      'rooms' : utils.clone_rooms(constants.ROOMS) 
 }
 
 def process_command(game_state: dict, command: str):

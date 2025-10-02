@@ -3,6 +3,20 @@ import math
 from . import constants, player_actions
 
 
+def clone_rooms(rooms: dict) -> dict:
+    """Создаёт независимую копию описания комнат."""
+    def clone_nested(value):
+        """Рекурсивно копирует словари, списки и кортежи."""
+        if isinstance(value, dict):
+            return {key: clone_nested(nested) for key, nested in value.items()}
+        if isinstance(value, list):
+            return [clone_nested(item) for item in value]
+        if isinstance(value, tuple):
+            return tuple(clone_nested(item) for item in value)
+        return value
+
+    return clone_nested(rooms)
+
 def show_help(commands: dict = constants.COMMANDS) -> None:
     """
     Выводит справку по доступным командам.
